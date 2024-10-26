@@ -47,8 +47,15 @@ jobs:
               sudo usermod -aG docker ec2-user
             fi
             
-            # Pull the latest image and deploy
+            # Pull the latest image
             sudo docker pull ${{ secrets.DOCKER_REPO_URL }}/samplee-docker-ec2:latest
-            sudo docker stop my-node-app || true
-            sudo docker rm my-node-app || true
+            
+            # Check if the container exists and remove it if it does
+            if [ "$(sudo docker ps -aq -f name=my-node-app)" ]; then
+                sudo docker stop my-node-app || true
+                sudo docker rm my-node-app || true
+            fi
+            
+            # Run the new container
             sudo docker run -d -p 80:80 --name my-node-app ${{ secrets.DOCKER_REPO_URL }}/samplee-docker-ec2:latest
+
