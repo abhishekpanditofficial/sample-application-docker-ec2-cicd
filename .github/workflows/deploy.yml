@@ -30,11 +30,6 @@ jobs:
           # Push the image to Docker Hub
           docker push ${{ secrets.DOCKER_REPO_URL }}/samplee-docker-ec2:latest
 
-      - name: Debugging - Docker Info
-        run: |
-          docker info
-          curl -I https://registry-1.docker.io
-          ping -c 4 google.com
 
       - name: SSH into EC2 instance and deploy
         uses: appleboy/ssh-action@master
