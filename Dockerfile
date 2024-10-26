@@ -1,9 +1,18 @@
-# Use an official Node.js runtime as a parent image
+# Use the official Node.js image.
 FROM node:lts-alpine
-# Set the working directory in the container
+
+# Set the working directory.
 WORKDIR /app
-# ... Copying files, installing dependencies ...
-# Expose the port your app is running on (e.g., 3000)
-EXPOSE 3000
-# Define the command to run your Node.js application
-CMD [ "node", "index.js" ]
+
+# Copy package.json and install dependencies.
+COPY package*.json ./
+RUN npm install
+
+# Copy the rest of the application code.
+COPY . .
+
+# Expose the port the app runs on.
+EXPOSE 80
+
+# Command to run the application.
+CMD ["node", "index.js"]
